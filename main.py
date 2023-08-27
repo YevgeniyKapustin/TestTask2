@@ -15,7 +15,9 @@ import requests
 def get_block_data(height: int) -> list[bytes] | None:
     """Get a list of block transactions."""
     response = requests.get(url=f'https://akash-rest.publicnode.com/cosmos/base/tendermint/v1beta1/blocks/{height}')
-    if not response:
+    if not (txs_b64 := response.json().get('block').get('data').get('txs')):
         return None
-    txs_b64 = response.json().get('block').get('data').get('txs')
     return list(map(lambda i: base64.b64decode(i), txs_b64))
+
+
+get_block_data(11260637)
