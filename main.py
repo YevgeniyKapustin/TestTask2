@@ -12,11 +12,11 @@ import base64
 import requests
 
 
-def get_block_data(height: int) -> list[bytes] | None:
+def get_block_txs(height: int) -> list[bytes] | None:
     """Get a list of block transactions."""
     response = requests.get(url=f'https://akash-rest.publicnode.com/cosmos/base/tendermint/v1beta1/blocks/{height}')
     if txs_b64 := response.json().get('block').get('data').get('txs'):
         return list(map(lambda i: base64.b64decode(i), txs_b64))
 
 
-get_block_data(11260637)
+get_block_txs(11260637)
